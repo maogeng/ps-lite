@@ -1,4 +1,6 @@
 #include "ps/ps.h"
+#include "test_lr.h"
+#include <string>
 
 using namespace ps;
 
@@ -17,10 +19,29 @@ int ArgPos(const std::string &str, int argc, const char * const * argv) {
 int main(int argc, char *argv[]) {
 	int i;
 	int app_id = 0;
+	std::string data_file = "trn.fea";
+//	int num_buffer = 128, mini_batch = 16;
 
 	if ((i = ArgPos((char *)"-app-id", argc, argv)) > 0) app_id = atoi(argv[i + 1]);
+	if ((i = ArgPos((char *)"-data_file", argc, argv)) > 0) app_id = atoi(argv[i + 1]);
+//	if ((i = ArgPos((char *)"-num_buffer", argc, argv)) > 0) app_id = atoi(argv[i + 1]);
+//	if ((i = ArgPos((char *)"-mini_batch", argc, argv)) > 0) app_id = atoi(argv[i + 1]);
 
-	std::cout<<app_id << std::endl;
+	Start();
+
+	StartServer(app_id);
+
+	RunScheduler();
+
+	RunWorker(app_id); 
+	//	DataQ *dataQ = new DataQ(num_buffer, mini_batch);
+	//if (IsWorker()) {
+	//	FILE *fin = fopen(data_file.c_str(), "r");
+	//	fclose(fin);
+	//}
+
+	Finalize();
+
 	return 0;
 }
 
